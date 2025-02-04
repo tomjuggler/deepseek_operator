@@ -3,7 +3,7 @@ import json
 import gradio as gr
 import httpx
 import asyncio
-from openai import OpenAI
+from langchain_openai import ChatOpenAI
 from browser_use import Agent
 # from dotenv import load_dotenv
 
@@ -12,8 +12,8 @@ from api_secrets import DEEPSEEK_API_KEY
 
 class DeepSeekOperator:
     def __init__(self):
-        self.client = OpenAI(
-            api_key=DEEPSEEK_API_KEY,
+        self.client = ChatOpenAI(
+            openai_api_key=DEEPSEEK_API_KEY,
             base_url="https://api.deepseek.com",
             timeout=httpx.Timeout(60.0)
         )
@@ -61,16 +61,6 @@ Example response for phone search:
         ]
         print(f"Sending message to api: {test_messages}")
         try:
-            
-            response = self.client.chat.completions.create(
-                model="deepseek-chat",
-                response_format={"type": "json_object"},
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": task}
-                ],
-                stream=False
-            )
             
             agent = Agent(
                 task=task,
