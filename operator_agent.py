@@ -16,23 +16,46 @@ class DeepSeekOperator:
         self.browser = Browser()
         
     def execute_task(self, task, max_steps=5):
-        system_prompt = """You are an AI operator that can complete web tasks. 
-        Generate step-by-step browser actions in JSON format. 
-        Respond ONLY with a JSON array of action objects with these required fields:
-        - action: One of [navigate, click, input, scroll, wait]
-        - selector: CSS selector (for click/input actions)
-        - value: Text to input or URL to navigate to
-        Example: [
-            {{"action": "navigate", "value": "https://gumtree.co.za"}},
-            {{"action": "input", "selector": "input.search-box", "value": "Android phone"}},
-            {{"action": "click", "selector": "button.search-button"}},
-            {{"action": "wait", "value": 3}}
-        ]
-        Task: {task}"""
+        system_prompt = """You are an expert web automation engineer. Generate precise browser actions to complete tasks on real websites.
+
+# Task Requirements
+1. Analyze the user's goal and website structure
+2. Create minimal, reliable actions using ONLY these types:
+   - navigate(url): Initial page load
+   - click(css_selector): Interactive elements
+   - input(css_selector, text): Form fields
+   - wait(seconds): Page loading time
+   - scroll(pixels): Page navigation (optional)
+
+# Website Specifics for Gumtree
+- Search box: '[data-qa="search-input"]'
+- Search button: '[data-qa="search-button"]'
+- Sort menu: '[data-qa="sort-select"]'
+- Price filter: '[data-qa="price-filter-input"]'
+
+# Output Rules
+- Return ONLY valid JSON array
+- Include necessary waits after navigation (3-5s)
+- Prioritize reliable CSS selectors over fragile XPaths
+- Add error handling for:
+  * Element not found
+  * Page load timeouts
+  * Unexpected popups
+
+Example response for phone search:
+[
+  {"action": "navigate", "value": "https://www.gumtree.co.za/s-cell-phone-phones/android-phones/v1c9077q0p1"},
+  {"action": "wait", "value": 5},
+  {"action": "click", "selector": "[data-qa='sort-select']"},
+  {"action": "click", "selector": "[data-qa='sort-option-price-asc']"},
+  {"action": "wait", "value": 3},
+  {"action": "click", "selector": "[data-qa='search-result']:first-child a"}
+]"""
+        
         test_messages=[
-                    {"role": "system", "content": system_prompt.format(task=task)},
-                    {"role": "user", "content": task}
-                ]
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": task}
+        ]
         print(f"Sending message to api: {test_messages}")
         try:
             
