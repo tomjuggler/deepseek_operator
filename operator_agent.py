@@ -28,7 +28,8 @@ class DeepSeekOperator:
                 messages=[
                     {"role": "system", "content": system_prompt.format(task=task)},
                     {"role": "user", "content": task}
-                ]
+                ],
+                stream=False
             )
             print(f"API Response Received: {response}")
             
