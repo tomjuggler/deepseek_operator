@@ -3,7 +3,7 @@ import json
 import gradio as gr
 import httpx
 from openai import OpenAI
-from browser_use import Browser
+from browser_use import Agent
 # from dotenv import load_dotenv
 
 # load_dotenv()
@@ -16,9 +16,8 @@ class DeepSeekOperator:
             base_url="https://api.deepseek.com",
             timeout=httpx.Timeout(60.0)
         )
-        self.browser = Browser()
         
-    def execute_task(self, task, max_steps=5):
+    async def execute_task(self, task, max_steps=5):
         system_prompt = """You are an expert web automation engineer. Generate precise browser actions to complete tasks on real websites.
 
 # Task Requirements
@@ -72,15 +71,13 @@ Example response for phone search:
                 stream=False
             )
             
-            steps_json = response.choices[0].message.content
-            steps = json.loads(steps_json)
-            
-            result = self.browser.execute_actions(
-                action_sequence=steps,
+            agent = Agent(
+                task=task,
+                llm=self.client,
                 max_iterations=max_steps
             )
-            print(f"Execution Result: {result}")
-            return f"Steps Generated:\n{steps}\n\nExecution Result:\n{result}"
+            result = await agent.run()
+            return f"Execution Result:\n{result}"
             
         except Exception as e:
             return f"API Error: {str(e)}"
