@@ -10,7 +10,7 @@ class DeepSeekOperator:
     def __init__(self):
         self.client = OpenAI(
             api_key=os.getenv("DEEPSEEK_API_KEY"),
-            base_url="https://api.deepseek.com/v1"
+            base_url="https://api.deepseek.com"
         )
         self.browser = Browser()
         
@@ -20,7 +20,7 @@ class DeepSeekOperator:
         
         try:
             response = self.client.chat.completions.create(
-                model="deepseek-reasoner",
+                model="deepseek-chat",
                 messages=[
                     {"role": "system", "content": system_prompt.format(task=task)},
                     {"role": "user", "content": task}
