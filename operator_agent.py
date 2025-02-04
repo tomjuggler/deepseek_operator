@@ -15,11 +15,11 @@ class DeepSeekOperator:
         self.client = ChatOpenAI(
             openai_api_key=DEEPSEEK_API_KEY,
             base_url="https://api.deepseek.com/v1",
-            model="deepseek-chat",
+            model="deepseek-reasoner",
             timeout=httpx.Timeout(60.0)
         )
         
-    async def execute_task(self, task, max_steps=5):
+    async def execute_task(self, task, max_steps=20):
         try:
             agent = Agent(
                 task=task,
