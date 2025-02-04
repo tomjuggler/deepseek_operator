@@ -1,7 +1,7 @@
 import os
 import gradio as gr
 from openai import OpenAI
-from browser_use import BrowserClient
+from browser_use import Browser
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,7 +12,7 @@ class DeepSeekOperator:
             api_key=os.getenv("DEEPSEEK_API_KEY"),
             base_url="https://api.deepseek.com/v1"
         )
-        self.browser = BrowserClient()
+        self.browser = Browser()
         
     def execute_task(self, task, max_steps=5):
         system_prompt = """You are an AI operator that can complete web tasks. 
