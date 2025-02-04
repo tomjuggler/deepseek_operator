@@ -26,11 +26,13 @@ class DeepSeekOperator:
                     {"role": "user", "content": task}
                 ]
             )
+            print(f"API Response Received: {response}")
             
             if not response.choices or not response.choices[0].message.content:
                 raise ValueError("Empty response from API")
 
             steps = response.choices[0].message.content
+            print(f"Raw Steps from API: {steps}")
             
             # Add validation for generated steps
             if not isinstance(steps, str) or len(steps.strip()) < 10:
@@ -39,11 +41,14 @@ class DeepSeekOperator:
             # Validate steps format
             if not isinstance(steps, list) or not all(isinstance(item, dict) for item in steps):
                 raise ValueError("Steps must be a list of action dictionaries")
-                
+            
+            print("Validated steps structure OK")
+            
             result = self.browser.execute_actions(
                 action_sequence=steps,
                 max_iterations=max_steps
             )
+            print(f"Execution Result: {result}")
             return f"Steps Generated:\n{steps}\n\nExecution Result:\n{result}"
             
         except Exception as e:
