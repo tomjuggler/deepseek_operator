@@ -3,14 +3,15 @@ import json
 import gradio as gr
 from openai import OpenAI
 from browser_use import Browser
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
+from api_secrets import DEEPSEEK_API_KEY
 
 class DeepSeekOperator:
     def __init__(self):
         self.client = OpenAI(
-            api_key=os.getenv("DEEPSEEK_API_KEY"),
+            api_key=DEEPSEEK_API_KEY,
             base_url="https://api.deepseek.com"
         )
         self.browser = Browser()
