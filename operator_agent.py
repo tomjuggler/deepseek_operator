@@ -74,10 +74,9 @@ Example response for phone search:
             
             agent = Agent(
                 task=task,
-                llm=self.client,
-                max_iterations=max_steps
+                llm=self.client
             )
-            result = await agent.run()
+            result = await agent.run(max_iterations=max_steps)
             return f"Execution Result:\n{result}"
             
         except Exception as e:
