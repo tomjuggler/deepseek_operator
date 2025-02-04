@@ -1,6 +1,7 @@
 import os
 import json
 import gradio as gr
+import httpx
 from openai import OpenAI
 from browser_use import Browser
 # from dotenv import load_dotenv
@@ -12,7 +13,8 @@ class DeepSeekOperator:
     def __init__(self):
         self.client = OpenAI(
             api_key=DEEPSEEK_API_KEY,
-            base_url="https://api.deepseek.com"
+            base_url="https://api.deepseek.com",
+            timeout=httpx.Timeout(60.0)
         )
         self.browser = Browser()
         
@@ -61,7 +63,7 @@ Example response for phone search:
         try:
             
             response = self.client.chat.completions.create(
-                model="deepseek-reasoner",
+                model="deepseek-chat",
                 response_format={"type": "json_object"},
                 messages=[
                     {"role": "system", "content": system_prompt},
@@ -70,29 +72,8 @@ Example response for phone search:
                 stream=False
             )
             
-            print(f"API Response Received: {response}")
-            
-            if not response.choices or not response.choices[0].message.content:
-                print(f"Empty response structure: {response}")
-                raise ValueError("Empty response from API")
-
-            # Parse JSON from API response
-            try:
-                steps_json = response.choices[0].message.content
-                print(f"Raw JSON from API: {steps_json}")
-                steps = json.loads(steps_json)
-                
-                # Validate parsed steps
-                if not isinstance(steps, list) or not all(
-                    isinstance(item, dict) and 'action' in item 
-                    for item in steps
-                ):
-                    raise ValueError("Steps must be a list of action dictionaries with 'action' keys")
-                    
-            except json.JSONDecodeError as e:
-                raise ValueError(f"Invalid JSON format in steps: {str(e)}") from e
-            
-            print("Validated steps structure OK")
+            steps_json = response.choices[0].message.content
+            steps = json.loads(steps_json)
             
             result = self.browser.execute_actions(
                 action_sequence=steps,
@@ -102,7 +83,7 @@ Example response for phone search:
             return f"Steps Generated:\n{steps}\n\nExecution Result:\n{result}"
             
         except Exception as e:
-            return f"Error processing task: {str(e)}\nPlease check your API key and network connection."
+            return f"API Error: {str(e)}"
 
 if __name__ == "__main__":
     import argparse
