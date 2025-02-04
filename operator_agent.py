@@ -23,10 +23,10 @@ class DeepSeekOperator:
         - selector: CSS selector (for click/input actions)
         - value: Text to input or URL to navigate to
         Example: [
-            {"action": "navigate", "value": "https://gumtree.co.za"},
-            {"action": "input", "selector": "input.search-box", "value": "Android phone"},
-            {"action": "click", "selector": "button.search-button"},
-            {"action": "wait", "value": 3}
+            {{"action": "navigate", "value": "https://gumtree.co.za"}},
+            {{"action": "input", "selector": "input.search-box", "value": "Android phone"}},
+            {{"action": "click", "selector": "button.search-button"}},
+            {{"action": "wait", "value": 3}}
         ]
         Task: {task}"""
         test_messages=[
