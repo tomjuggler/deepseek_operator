@@ -27,7 +27,7 @@ class DeepSeekOperator:
         )
         
         steps = response.choices[0].message.content
-        result = self.browser.execute(steps, max_steps=max_steps)
+        result = self.browser.perform(steps, max_steps=max_steps)
         return f"Steps Generated:\n{steps}\n\nExecution Result:\n{result}"
 
 if __name__ == "__main__":
