@@ -18,8 +18,16 @@ class DeepSeekOperator:
     def execute_task(self, task, max_steps=5):
         system_prompt = """You are an AI operator that can complete web tasks. 
         Generate step-by-step browser actions in JSON format. 
-        Respond ONLY with a JSON array of action objects. 
-        Example: [{"action": "navigate", "url": "..."}, ...]
+        Respond ONLY with a JSON array of action objects with these required fields:
+        - action: One of [navigate, click, input, scroll, wait]
+        - selector: CSS selector (for click/input actions)
+        - value: Text to input or URL to navigate to
+        Example: [
+            {"action": "navigate", "value": "https://gumtree.co.za"},
+            {"action": "input", "selector": "input.search-box", "value": "Android phone"},
+            {"action": "click", "selector": "button.search-button"},
+            {"action": "wait", "value": 3}
+        ]
         Task: {task}"""
         
         try:
@@ -48,8 +56,11 @@ class DeepSeekOperator:
                 steps = json.loads(steps_json)
                 
                 # Validate parsed steps
-                if not isinstance(steps, list) or not all(isinstance(item, dict) for item in steps):
-                    raise ValueError("Steps must be a list of action dictionaries")
+                if not isinstance(steps, list) or not all(
+                    isinstance(item, dict) and 'action' in item 
+                    for item in steps
+                ):
+                    raise ValueError("Steps must be a list of action dictionaries with 'action' keys")
                     
             except json.JSONDecodeError as e:
                 raise ValueError(f"Invalid JSON format in steps: {str(e)}") from e
