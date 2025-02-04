@@ -2,6 +2,7 @@ import os
 import json
 import gradio as gr
 import httpx
+import asyncio
 from openai import OpenAI
 from browser_use import Agent
 # from dotenv import load_dotenv
@@ -100,6 +101,6 @@ if __name__ == "__main__":
         )
         iface.launch()
     elif args.task:
-        print(agent.execute_task(args.task))
+        print(asyncio.run(agent.execute_task(args.task)))
     else:
         print("Please provide either --task or --gradio argument")
