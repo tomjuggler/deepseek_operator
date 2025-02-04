@@ -29,12 +29,13 @@ class DeepSeekOperator:
             {"action": "wait", "value": 3}
         ]
         Task: {task}"""
-        
-        try:
-            test_messages=[
+        test_messages=[
                     {"role": "system", "content": system_prompt.format(task=task)},
                     {"role": "user", "content": task}
-                ],
+                ]
+        print(f"Sending message to api: {test_messages}")
+        try:
+            
             response = self.client.chat.completions.create(
                 model="deepseek-reasoner",
                 messages=[
@@ -43,7 +44,7 @@ class DeepSeekOperator:
                 ],
                 stream=False
             )
-            print(f"Sending message to api: {test_messages}")
+            
             print(f"API Response Received: {response}")
             
             if not response.choices or not response.choices[0].message.content:
