@@ -14,8 +14,8 @@ class DeepSeekOperator:
     def __init__(self):
         self.client = ChatOpenAI(
             openai_api_key=DEEPSEEK_API_KEY,
-            base_url="https://api.deepseek.com",  # Add /v1 endpoint
-            model="deepseek-reasoner",  # Explicitly set model name
+            base_url="https://api.deepseek.com/v1",
+            model="deepseek-chat",
             timeout=httpx.Timeout(60.0)
         )
         
@@ -26,10 +26,7 @@ class DeepSeekOperator:
                 llm=self.client
             )
             # Add explicit JSON response formatting
-            result = await agent.run(
-                max_steps=max_steps,
-                format_response=lambda resp: resp.json()  # Force JSON parsing
-            )
+            result = await agent.run(max_steps=max_steps)
             return f"Execution Result:\n{result}"
             
         except json.JSONDecodeError as e:
