@@ -20,7 +20,7 @@ class DeepSeekOperator:
         
         try:
             response = self.client.chat.completions.create(
-                model="deepseek-chat",
+                model="deepseek-reasoner",
                 messages=[
                     {"role": "system", "content": system_prompt.format(task=task)},
                     {"role": "user", "content": task}
