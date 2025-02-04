@@ -14,8 +14,8 @@ class DeepSeekOperator:
     def __init__(self):
         self.client = ChatOpenAI(
             openai_api_key=DEEPSEEK_API_KEY,
-            base_url="https://api.deepseek.com/v1",  # Add /v1 endpoint
-            model="deepseek-chat",  # Explicitly set model name
+            base_url="https://api.deepseek.com",  # Add /v1 endpoint
+            model="deepseek-reasoner",  # Explicitly set model name
             timeout=httpx.Timeout(60.0)
         )
         
