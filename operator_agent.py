@@ -45,12 +45,12 @@ class DeepSeekOperator:
 
 Example response for phone search:
 [
-  {"action": "navigate", "value": "https://www.gumtree.co.za/s-cell-phone-phones/android-phones/v1c9077q0p1"},
-  {"action": "wait", "value": 5},
-  {"action": "click", "selector": "[data-qa='sort-select']"},
-  {"action": "click", "selector": "[data-qa='sort-option-price-asc']"},
-  {"action": "wait", "value": 3},
-  {"action": "click", "selector": "[data-qa='search-result']:first-child a"}
+  {{"action": "navigate", "value": "https://www.gumtree.co.za/s-cell-phone-phones/android-phones/v1c9077q0p1"}},
+  {{"action": "wait", "value": 5}},
+  {{"action": "click", "selector": "[data-qa='sort-select']"}},
+  {{"action": "click", "selector": "[data-qa='sort-option-price-asc']"}},
+  {{"action": "wait", "value": 3}},
+  {{"action": "click", "selector": "[data-qa='search-result']:first-child a"}}
 ]"""
         
         test_messages=[
@@ -62,8 +62,9 @@ Example response for phone search:
             
             response = self.client.chat.completions.create(
                 model="deepseek-reasoner",
+                response_format={"type": "json_object"},
                 messages=[
-                    {"role": "system", "content": system_prompt.format(task=task)},
+                    {"role": "system", "content": system_prompt},
                     {"role": "user", "content": task}
                 ],
                 stream=False
@@ -72,6 +73,7 @@ Example response for phone search:
             print(f"API Response Received: {response}")
             
             if not response.choices or not response.choices[0].message.content:
+                print(f"Empty response structure: {response}")
                 raise ValueError("Empty response from API")
 
             # Parse JSON from API response
