@@ -39,7 +39,7 @@ class OpenRouterOperator:
         self.client = ChatOpenAI(
             openai_api_key=OPENROUTER_API_KEY,
             base_url="https://openrouter.ai/api/v1",
-            model="deepseek/deepseek-r1",
+            model="deepseek/deepseek-r1", # todo: deepseek-r1 does not support tools, find another affordable model on openrouter which works
             timeout=httpx.Timeout(120.0),
             default_headers={
                 "HTTP-Referer": "https://circusscientist.com",
@@ -74,7 +74,7 @@ if __name__ == "__main__":
     parser.add_argument("--task", help="Task to execute")
     parser.add_argument("--gradio", action="store_true", help="Launch Gradio UI")
     parser.add_argument("--provider", choices=["deepseek", "openrouter"], 
-                      default="openrouter", help="AI provider to use")
+                      default="deepseek", help="AI provider to use")
     args = parser.parse_args()
     
     agent = DeepSeekOperator() if args.provider == "deepseek" else OpenRouterOperator()
