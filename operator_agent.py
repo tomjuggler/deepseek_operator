@@ -8,7 +8,7 @@ from browser_use import Agent
 # from dotenv import load_dotenv
 
 # load_dotenv()
-from api_secrets import DEEPSEEK_API_KEY
+from api_secrets import DEEPSEEK_API_KEY, OPENROUTER_API_KEY
 
 class DeepSeekOperator:
     def __init__(self):
@@ -34,21 +34,50 @@ class DeepSeekOperator:
         except Exception as e:
             return f"API Error: {str(e)}"
 
+class OpenRouterOperator:
+    def __init__(self):
+        self.client = ChatOpenAI(
+            openai_api_key=OPENROUTER_API_KEY,
+            base_url="https://openrouter.ai/api/v1",
+            model="deepseek-ai/deepseek-r1",
+            timeout=httpx.Timeout(120.0),
+            default_headers={
+                "HTTP-Referer": "https://your-site.com",  # Update with your URL
+                "X-Title": "DeepSeek Operator"  # Update with your app name
+            }
+        )
+        
+    async def execute_task(self, task, max_steps=20):
+        try:
+            agent = Agent(
+                task=task,
+                llm=self.client
+            )
+            result = await agent.run(max_steps=max_steps)
+            return f"Execution Result:\n{result}"
+            
+        except json.JSONDecodeError as e:
+            return f"JSON Parsing Error: {str(e)}"
+        except Exception as e:
+            return f"API Error: {str(e)}"
+
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser(description="DeepSeek Operator")
+    parser = argparse.ArgumentParser(description="AI Operator")
     parser.add_argument("--task", help="Task to execute")
     parser.add_argument("--gradio", action="store_true", help="Launch Gradio UI")
+    parser.add_argument("--provider", choices=["deepseek", "openrouter"], 
+                      default="deepseek", help="AI provider to use")
     args = parser.parse_args()
     
-    agent = DeepSeekOperator()
+    agent = DeepSeekOperator() if args.provider == "deepseek" else OpenRouterOperator()
     
     if args.gradio:
         iface = gr.Interface(
             fn=agent.execute_task,
             inputs=gr.Textbox(lines=2, label="Enter Task"),
             outputs=gr.Textbox(label="Execution Results"),
-            title="DeepSeek Operator"
+            title=f"AI Operator ({args.provider.capitalize()})"
         )
         iface.launch()
     elif args.task:
