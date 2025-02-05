@@ -44,6 +44,13 @@ class OpenRouterOperator:
             default_headers={
                 "http-referer": "https://circusscientist.com",  # Update with your URL
                 "x-title": "DeepSeek Operator"  # Update with your app name
+            },
+            model_kwargs={
+                "provider": {
+                    "order": ["DeepInfra", "DeepSeek", "Nebius", "Novita"],
+                    "allow_fallbacks": False,
+                    "sort": "price"
+                }
             }
         )
         
