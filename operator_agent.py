@@ -91,7 +91,7 @@ class OpenRouterOperator:
                 "HTTP-Referer": "https://circusscientist.com",
                 "X-Title": "DeepSeek Operator",
                 # Add provider preferences as JSON string in headers
-                "Provider-Preferences": json.dumps({
+                "HTTP-Provider": json.dumps({
                     "order": ["DeepInfra", "DeepSeek", "Nebius", "Novita"],
                     "allow_fallbacks": True,
                     "require_parameters": True,
