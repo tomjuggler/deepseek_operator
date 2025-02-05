@@ -47,7 +47,8 @@ class OpenRouterOperator:
                 # Add provider preferences as JSON string in headers
                 "HTTP-Provider": json.dumps({
                     "order": ["DeepInfra", "DeepSeek", "Nebius", "Novita"],
-                    "allow_fallbacks": False,
+                    "allow_fallbacks": True,  # Changed to True to allow finding tool-supporting providers
+                    "require_parameters": True,  # Added to ensure providers support all parameters
                     "sort": "price"
                 })
             }
