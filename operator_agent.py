@@ -28,6 +28,20 @@ class OllamaOperator:
         except Exception as e:
             return f"Ollama Error: {str(e)}"
 
+    def save_to_file(self, content, filename=None):
+        """Save content to a text file"""
+        try:
+            if not filename:
+                from datetime import datetime
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"summary_{timestamp}.txt"
+            
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(content)
+            return f"Successfully saved to {filename}"
+        except Exception as e:
+            return f"File save error: {str(e)}"
+
 class DeepSeekOperator:
     def __init__(self, model="deepseek-reasoner"):
         self.client = ChatOpenAI(
@@ -52,6 +66,20 @@ class DeepSeekOperator:
         except Exception as e:
             return f"API Error: {str(e)}"
 
+    def save_to_file(self, content, filename=None):
+        """Save content to a text file"""
+        try:
+            if not filename:
+                from datetime import datetime
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"summary_{timestamp}.txt"
+            
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(content)
+            return f"Successfully saved to {filename}"
+        except Exception as e:
+            return f"File save error: {str(e)}"
+
 class OpenRouterOperator:
     def __init__(self, model="deepseek/deepseek-r1"):
         self.client = ChatOpenAI(
@@ -63,10 +91,10 @@ class OpenRouterOperator:
                 "HTTP-Referer": "https://circusscientist.com",
                 "X-Title": "DeepSeek Operator",
                 # Add provider preferences as JSON string in headers
-                "HTTP-Provider": json.dumps({
+                "Provider-Preferences": json.dumps({
                     "order": ["DeepInfra", "DeepSeek", "Nebius", "Novita"],
-                    "allow_fallbacks": True,  # Changed to True to allow finding tool-supporting providers
-                    "require_parameters": True,  # Added to ensure providers support all parameters
+                    "allow_fallbacks": True,
+                    "require_parameters": True,
                     "sort": "price"
                 })
             }
@@ -86,6 +114,20 @@ class OpenRouterOperator:
         except Exception as e:
             return f"API Error: {str(e)}"
 
+    def save_to_file(self, content, filename=None):
+        """Save content to a text file"""
+        try:
+            if not filename:
+                from datetime import datetime
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"summary_{timestamp}.txt"
+            
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(content)
+            return f"Successfully saved to {filename}"
+        except Exception as e:
+            return f"File save error: {str(e)}"
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="AI Operator")
@@ -94,6 +136,10 @@ if __name__ == "__main__":
     parser.add_argument("--provider", choices=["deepseek", "openrouter", "ollama"], 
                       default="deepseek", help="AI provider to use")
     parser.add_argument("--model", help="Override default model for the selected provider")
+    parser.add_argument("--save", action="store_true", 
+                       help="Save output to file")
+    parser.add_argument("--filename", 
+                       help="Custom filename for saved output")
     args = parser.parse_args()
     
     agent = (
@@ -111,6 +157,14 @@ if __name__ == "__main__":
         )
         iface.launch()
     elif args.task:
-        print(asyncio.run(agent.execute_task(args.task)))
+        result = asyncio.run(agent.execute_task(args.task))
+        print(result)
+        
+        if args.save:
+            save_result = agent.save_to_file(
+                result, 
+                args.filename
+            )
+            print(save_result)
     else:
         print("Please provide either --task or --gradio argument")
