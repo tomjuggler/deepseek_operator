@@ -42,8 +42,8 @@ class OpenRouterOperator:
             model="deepseek-ai/deepseek-r1",
             timeout=httpx.Timeout(120.0),
             default_headers={
-                "HTTP-Referer": "https://your-site.com",  # Update with your URL
-                "X-Title": "DeepSeek Operator"  # Update with your app name
+                "http-referer": "https://circusscientist.com",  # Update with your URL
+                "x-title": "DeepSeek Operator"  # Update with your app name
             }
         )
         
