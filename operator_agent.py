@@ -16,7 +16,7 @@ class DeepSeekOperator:
             openai_api_key=DEEPSEEK_API_KEY,
             base_url="https://api.deepseek.com/v1",
             model="deepseek-reasoner",
-            timeout=httpx.Timeout(60.0)
+            timeout=httpx.Timeout(120.0)
         )
         
     async def execute_task(self, task, max_steps=20):
