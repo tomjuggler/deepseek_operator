@@ -2,8 +2,15 @@
 
 Open-source ChatGPT Operator alternative using DeepSeek R1 and browser automation.
 
-## Setup
+## Information: 
+- Created using Aider and DeepSeek R1
+- Check out the Circus Scientist blog and tutorial site for more interesting AI and IOT related projects
+- DeepSeek api is pretty unreliable currently, expect this app to fail for no reason *a lot*
+- MIT License have fun
+- No guarantees, AI wrote the whole thing I take no responsibility, please check the code there's not much
 
+## Setup
+- *tested on Python 3.12*
 1. Clone repo & create virtual environment:
 ```bash
 python -m venv venv
@@ -16,9 +23,11 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
-3. Create .env file:
+3. Create api_secrets.py file with the following:
 ```bash
-echo "DEEPSEEK_API_KEY=your_api_key_here" > .env
+DEEPSEEK_API_KEY="**********"
+OPENROUTER_API_KEY="****************"
+
 ```
 
 ## Usage
