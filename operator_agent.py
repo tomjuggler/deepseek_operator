@@ -73,7 +73,7 @@ if __name__ == "__main__":
     parser.add_argument("--task", help="Task to execute")
     parser.add_argument("--gradio", action="store_true", help="Launch Gradio UI")
     parser.add_argument("--provider", choices=["deepseek", "openrouter"], 
-                      default="deepseek", help="AI provider to use")
+                      default="openrouter", help="AI provider to use")
     args = parser.parse_args()
     
     agent = DeepSeekOperator() if args.provider == "deepseek" else OpenRouterOperator()
