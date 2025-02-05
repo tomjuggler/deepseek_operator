@@ -39,7 +39,7 @@ class OpenRouterOperator:
         self.client = ChatOpenAI(
             openai_api_key=OPENROUTER_API_KEY,
             base_url="https://openrouter.ai/api/v1",
-            model="deepseek-ai/deepseek-r1",
+            model="deepseek/deepseek-r1",
             timeout=httpx.Timeout(120.0),
             default_headers={
                 "http-referer": "https://circusscientist.com",  # Update with your URL
