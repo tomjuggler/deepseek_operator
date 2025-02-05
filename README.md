@@ -4,10 +4,12 @@ Open-source ChatGPT Operator alternative using DeepSeek R1 and browser automatio
 
 ## Information: 
 - Created using [Aider](https://aider.chat) and [DeepSeek R1](https://deepseek.com)
-- Check out the [Circus Scientist blog](https://circusscientist.com) for more interesting AI and IOT related projects
+- Check out the [Circus Scientist blog and tutorial site](https://circusscientist.com) for more interesting AI and IOT related projects
 - DeepSeek api is pretty unreliable currently, expect this app to fail for no reason *a lot*
 - MIT License have fun
-- No guarantees, AI wrote the whole thing I take no responsibility, please check the code there's not much
+- No guarantees, AI wrote the whole thing and I take no responsibility, please check the code there's not much
+
+- Currently only DeepSeek api is actually working, and it's really slow. R1 on OpenRouter does not work. Ollama is untested, my laptop cannot handle it ;-)
 
 ## Setup
 - *tested on Python 3.12*
