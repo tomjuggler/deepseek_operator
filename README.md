@@ -3,8 +3,8 @@
 Open-source ChatGPT Operator alternative using DeepSeek R1 and browser automation.
 
 ## Information: 
-- Created using Aider and DeepSeek R1
-- Check out the Circus Scientist blog and tutorial site for more interesting AI and IOT related projects
+- Created using [Aider](https://aider.chat) and [DeepSeek R1](https://deepseek.com)
+- Check out the [Circus Scientist blog](https://circusscientist.com) for more interesting AI and IOT related projects
 - DeepSeek api is pretty unreliable currently, expect this app to fail for no reason *a lot*
 - MIT License have fun
 - No guarantees, AI wrote the whole thing I take no responsibility, please check the code there's not much
