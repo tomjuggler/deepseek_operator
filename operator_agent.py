@@ -53,7 +53,7 @@ class DeepSeekOperator:
             return f"API Error: {str(e)}"
 
 class OpenRouterOperator:
-    def __init__(self, model="deepseek-r1:1.5b"):
+    def __init__(self, model="deepseek/deepseek-r1"):
         self.client = ChatOpenAI(
             openai_api_key=OPENROUTER_API_KEY,
             base_url="https://openrouter.ai/api/v1",
@@ -97,9 +97,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     agent = (
-        DeepSeekOperator(model=args.model) if args.provider == "deepseek" 
-        else OpenRouterOperator(model=args.model) if args.provider == "openrouter" 
-        else OllamaOperator(model=args.model if args.model else "deepseek-r1:1.5b")
+        DeepSeekOperator(model=args.model or "deepseek-reasoner") if args.provider == "deepseek" 
+        else OpenRouterOperator(model=args.model or "deepseek/deepseek-r1") if args.provider == "openrouter" 
+        else OllamaOperator(model=args.model or "deepseek-r1:1.5b")
     )
     
     if args.gradio:
