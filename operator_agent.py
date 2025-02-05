@@ -42,15 +42,14 @@ class OpenRouterOperator:
             model="deepseek/deepseek-r1",
             timeout=httpx.Timeout(120.0),
             default_headers={
-                "http-referer": "https://circusscientist.com",  # Update with your URL
-                "x-title": "DeepSeek Operator"  # Update with your app name
-            },
-            model_kwargs={
-                "provider": {
+                "HTTP-Referer": "https://circusscientist.com",
+                "X-Title": "DeepSeek Operator",
+                # Add provider preferences as JSON string in headers
+                "HTTP-Provider": json.dumps({
                     "order": ["DeepInfra", "DeepSeek", "Nebius", "Novita"],
                     "allow_fallbacks": False,
                     "sort": "price"
-                }
+                })
             }
         )
         
