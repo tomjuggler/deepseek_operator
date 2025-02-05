@@ -1,4 +1,5 @@
 .aider*
+.venv/*
 venv/*
 .env
 api_secrets.py
