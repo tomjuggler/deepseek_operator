@@ -186,12 +186,13 @@ if __name__ == "__main__":
         )
         iface.launch()
     elif args.task:
-        result = asyncio.run(agent.execute_task(args.task))
-        print(result)
+        raw_result = asyncio.run(agent.execute_task(args.task))
+        formatted_result = format_result(raw_result)
+        print(formatted_result)
         
         if args.save:
             save_result = agent.save_to_file(
-                result, 
+                formatted_result,  # Save formatted version
                 args.filename
             )
             print(save_result)
