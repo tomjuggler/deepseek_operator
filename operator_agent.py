@@ -147,13 +147,42 @@ if __name__ == "__main__":
         else OpenRouterOperator(model=args.model or "deepseek/deepseek-r1") if args.provider == "openrouter" 
         else OllamaOperator(model=args.model or "deepseek-r1:1.5b")
     )
+
+    def format_result(raw_output):
+        """Convert raw output to human-readable format"""
+        try:
+            # Try to extract JSON content if present
+            if "Execution Result:" in raw_output:
+                content = raw_output.split("Execution Result:\n", 1)[1]
+                try:
+                    data = json.loads(content)
+                    formatted = "## Final Result\n"
+                    formatted += data.get("final_answer", "No final answer found") + "\n\n"
+                    if "steps" in data:
+                        formatted += "## Steps Taken\n"
+                        for i, step in enumerate(data.get("steps", []), 1):
+                            formatted += f"{i}. {step}\n"
+                    return formatted
+                except json.JSONDecodeError:
+                    return raw_output  # Return original if not JSON
+            return raw_output
+        except Exception as e:
+            return f"Error formatting result: {str(e)}"
     
     if args.gradio:
+        async def wrapper(task):
+            raw_result = await agent.execute_task(task)
+            return format_result(raw_result)
+        
         iface = gr.Interface(
-            fn=agent.execute_task,
+            fn=wrapper,
             inputs=gr.Textbox(lines=2, label="Enter Task"),
-            outputs=gr.Textbox(label="Execution Results"),
-            title=f"AI Operator ({args.provider.capitalize()})"
+            outputs=gr.Markdown(label="Execution Results"),
+            title=f"AI Operator ({args.provider.capitalize()})",
+            examples=[
+                ["Research latest AI developments and summarize key points"],
+                ["Compare current LLM model capabilities"]
+            ]
         )
         iface.launch()
     elif args.task:
