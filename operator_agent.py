@@ -6,6 +6,22 @@ import asyncio
 from langchain_openai import ChatOpenAI
 from langchain_community.llms import Ollama
 from browser_use import Agent
+
+def format_for_file(content):
+    """Convert Markdown-style output to plain text with headings"""
+    formatted = []
+    for line in content.split('\n'):
+        if line.startswith('## '):
+            # Convert markdown headers to underlined text
+            heading = line[3:].strip()
+            formatted.append(f"{heading.upper()}\n{'=' * len(heading)}")
+        elif line.startswith('1. '):
+            # Ensure list items have proper spacing
+            formatted.append(f"\n{line}")
+        else:
+            formatted.append(line)
+    # Add double newline between paragraphs
+    return '\n'.join(formatted).replace('\n\n', '\n').replace('\n', '\n\n')
 # from dotenv import load_dotenv
 
 # load_dotenv()
@@ -36,8 +52,11 @@ class OllamaOperator:
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 filename = f"summary_{timestamp}.txt"
             
+            # Add formatting step before saving
+            formatted_content = format_for_file(content)
+            
             with open(filename, 'w', encoding='utf-8') as f:
-                f.write(content)
+                f.write(formatted_content)
             return f"Successfully saved to {filename}"
         except Exception as e:
             return f"File save error: {str(e)}"
@@ -74,8 +93,11 @@ class DeepSeekOperator:
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 filename = f"summary_{timestamp}.txt"
             
+            # Add formatting step before saving
+            formatted_content = format_for_file(content)
+            
             with open(filename, 'w', encoding='utf-8') as f:
-                f.write(content)
+                f.write(formatted_content)
             return f"Successfully saved to {filename}"
         except Exception as e:
             return f"File save error: {str(e)}"
@@ -122,8 +144,11 @@ class OpenRouterOperator:
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 filename = f"summary_{timestamp}.txt"
             
+            # Add formatting step before saving
+            formatted_content = format_for_file(content)
+            
             with open(filename, 'w', encoding='utf-8') as f:
-                f.write(content)
+                f.write(formatted_content)
             return f"Successfully saved to {filename}"
         except Exception as e:
             return f"File save error: {str(e)}"
