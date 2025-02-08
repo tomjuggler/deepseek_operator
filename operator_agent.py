@@ -174,25 +174,25 @@ if __name__ == "__main__":
     )
 
     def format_result(raw_output):
-        """Convert raw output to human-readable format"""
+        """Convert raw output to formatted markdown structure"""
         try:
-            # Try to extract JSON content if present
-            if "Execution Result:" in raw_output:
-                content = raw_output.split("Execution Result:\n", 1)[1]
-                try:
-                    data = json.loads(content)
-                    formatted = "## Final Result\n"
-                    formatted += data.get("final_answer", "No final answer found") + "\n\n"
-                    if "steps" in data:
-                        formatted += "## Steps Taken\n"
-                        for i, step in enumerate(data.get("steps", []), 1):
-                            formatted += f"{i}. {step}\n"
-                    return formatted
-                except json.JSONDecodeError:
-                    return raw_output  # Return original if not JSON
-            return raw_output
+            # Extract core content
+            content = raw_output.split("Execution Result:\n", 1)[-1]
+            
+            # Split into sections based on natural breaks
+            sections = [s.strip() for s in content.split('\n\n') if s.strip()]
+            
+            formatted = []
+            for section in sections:
+                if section.startswith("1. "):  # List items
+                    formatted.append(f"## Steps Taken\n{section}")
+                else:  # Main result
+                    formatted.append(f"## Final Result\n{section}")
+            
+            return '\n\n'.join(formatted)
+            
         except Exception as e:
-            return f"Error formatting result: {str(e)}"
+            return f"## Processing Error\n{str(e)}\n\nRaw output:\n{raw_output}"
     
     if args.gradio:
         async def wrapper(task):
