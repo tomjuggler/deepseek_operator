@@ -58,7 +58,7 @@ python operator_agent.py --gradio --provider ollama
   - Default: deepseek
   - Default models:
     - DeepSeek: "deepseek-reasoner"
-    - OpenRouter: "meta-llama/llama-3.3-70b-instruct"
+    - OpenRouter: "meta-llama/llama-3.3-70b-instruct" (requires careful prompting but works)
     - Ollama: "deepseek-r1:1.5b" (untested)
 - `--model`: Override default model for selected provider
 - `--save`: Automatically save results to timestamped .txt file
