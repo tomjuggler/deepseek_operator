@@ -144,7 +144,7 @@ if __name__ == "__main__":
     
     agent = (
         DeepSeekOperator(model=args.model or "deepseek-reasoner") if args.provider == "deepseek" 
-        else OpenRouterOperator(model=args.model or "deepseek/deepseek-r1") if args.provider == "openrouter" 
+        else OpenRouterOperator(model=args.model or "meta-llama/llama-3.3-70b-instruct") if args.provider == "openrouter" 
         else OllamaOperator(model=args.model or "deepseek-r1:1.5b")
     )
 
