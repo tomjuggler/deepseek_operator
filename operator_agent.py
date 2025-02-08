@@ -81,7 +81,7 @@ class DeepSeekOperator:
             return f"File save error: {str(e)}"
 
 class OpenRouterOperator:
-    def __init__(self, model="deepseek/deepseek-r1"):
+    def __init__(self, model="meta-llama/llama-3.3-70b-instruct"):
         self.client = ChatOpenAI(
             openai_api_key=OPENROUTER_API_KEY,
             base_url="https://openrouter.ai/api/v1",
