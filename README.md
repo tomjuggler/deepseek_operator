@@ -9,7 +9,9 @@ Open-source ChatGPT Operator alternative using DeepSeek R1 and browser automatio
 - MIT License have fun
 - No guarantees, AI wrote the whole thing and I take no responsibility, please check the code there's not much
 
-- Currently only DeepSeek api is actually working, and it's really slow. R1 on OpenRouter does not work. Ollama is untested, my laptop cannot handle it ;-)
+- DeepSeek and OpenRouter providers are functional (OpenRouter using Meta-Llama by default)
+- DeepSeek API can be unreliable and slow
+- Ollama remains untested due to hardware requirements
 
 ## Setup
 - *tested on Python 3.12*
@@ -56,8 +58,8 @@ python operator_agent.py --gradio --provider ollama
   - Default: deepseek
   - Default models:
     - DeepSeek: "deepseek-reasoner"
-    - OpenRouter: "deepseek/deepseek-r1"
-    - Ollama: "deepseek-r1:1.5b"
+    - OpenRouter: "meta-llama/llama-3.3-70b-instruct"
+    - Ollama: "deepseek-r1:1.5b" (untested)
 - `--model`: Override default model for selected provider
 - `--save`: Automatically save results to timestamped .txt file
 - `--filename`: Specify custom filename for saved results
