@@ -179,9 +179,24 @@ if __name__ == "__main__":
             # Extract core content
             content = raw_output.split("Execution Result:\n", 1)[-1]
             
-            # Split into sections based on natural breaks
-            sections = [s.strip() for s in content.split('\n\n') if s.strip()]
+            # Find the final 'done' entry if present
+            done_content = None
+            entries = content.split('ActionResult(')
+            for entry in reversed(entries):  # Search from newest to oldest
+                if 'is_done=True' in entry:
+                    # Extract the text content using string operations
+                    text_start = entry.find("extracted_content='") + len("extracted_content='")
+                    text_end = entry.find("', error=")
+                    if text_start > len("extracted_content='") and text_end > text_start:
+                        done_content = entry[text_start:text_end].replace('\\n', '\n')
+                    break
             
+            # Format based on found content
+            if done_content:
+                return f"## Final Result\n{done_content}"
+                
+            # Fallback to original formatting
+            sections = [s.strip() for s in content.split('\n\n') if s.strip()]
             formatted = []
             for section in sections:
                 if section.startswith("1. "):  # List items
