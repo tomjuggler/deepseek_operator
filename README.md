@@ -46,7 +46,7 @@ python operator_agent.py --task "Book flight from NYC to London on Dec 25th"
 python operator_agent.py --provider ollama  --task "Research AI news"
 
 # Specify provider and model
-python operator_agent.py --provider ollama --model "anthropic/claude-3.5-haiku" --task "Research AI news"
+python operator_agent.py --provider openrouter --model "anthropic/claude-3.5-haiku" --task "Research AI news"
 python operator_agent.py --provider openrouter --model "anthropic/claude-3-opus" --task "Analyze market trends"
 
 # Save results to file
